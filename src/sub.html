@@ -1,0 +1,458 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Tổ Chức Bộ Máy</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="plugin/popModal.css">
+    <link href="../src/skins/all.css?v=1.0.2" rel="stylesheet">
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+
+        .parent-ul {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title" id="headerTitle">Tổ Chức Bộ Máy</span>
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <input class="mdl-textfield__input" type="text" id="search">
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+                <li class="mdl-menu__item">About</li>
+                <li class="mdl-menu__item">Contact</li>
+                <li class="mdl-menu__item">Legal information</li>
+            </ul>
+        </div>
+    </header>
+    <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header class="demo-drawer-header">
+            <img src="images/user.jpg" class="demo-avatar">
+            <div class="demo-avatar-dropdown">
+                <span>hello@example.com</span>
+                <div class="mdl-layout-spacer"></div>
+                <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                    <i class="material-icons" role="presentation">arrow_drop_down</i>
+                    <span class="visuallyhidden">Accounts</span>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+                    <li class="mdl-menu__item">hello@example.com</li>
+                    <li class="mdl-menu__item">info@example.com</li>
+                    <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+                </ul>
+            </div>
+        </header>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">home</i><span>YÊU CẦU CHUNG</span></a>
+            <a class="mdl-navigation__link" href="sub.html"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                               role="presentation">class</i><span>TỔ CHỨC BỘ MÁY</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">event</i><span>KẾ HOẠCH ATVSLĐ</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">report_problem</i><span>ĐÁNH GIÁ RỦI RO</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">forum</i><span>TỰ KIỂMTRA</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">flag</i><span>TUYÊN TRUYỀN - HUẤN LUYỆN</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">assignment_late</i><span>XỬ LÝ TÌNH HUỐNG KHẨN CẤP</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">subtitles</i><span>BÁO CÁO ĐỊNH KÌ</span></a>
+            <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                              role="presentation">people</i><span>HỒ SƠ QUẢN LÝ</span></a>
+            <div class="mdl-layout-spacer"></div>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content mdl-color--grey-100">
+        <div id="content" class="mdl-grid demo-content">
+
+        </div>
+    </main>
+</div>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="plugin/popModal.min.js"></script>
+<script src="../src/js/icheck.min.js"></script>
+<script src="handlebars-v3.0.3.js"></script>
+<style>
+    .popup{
+        display: none;
+    }
+</style>
+<script id="question-template" type="text/x-handlebars-template">
+
+    <div class="question">
+        <div id="yes_popup" class="popup">
+            <div class="popModal_content popModal_contentOverflow">
+                <ul>
+                    {{#each question.options}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+                <button class="my_popup_close">Close</button>
+            </div>
+        </div>
+        <div id="improve_popup" class="popup">
+            <div class="popModal_content popModal_contentOverflow">
+                <input placeholder="Ghi Chú"/>
+            </div>
+        </div>
+        <div id="no_popup" class="popup">
+            <div class="popModal_content popModal_contentOverflow">
+                <div>
+                    {{question.dkcc}}
+                </div>
+                <div>
+                    {{question.hdth}}
+                </div>
+            </div>
+        </div>
+        <ul>
+            <li class="parent-ul">
+                <a data-toggle="collapse" data-target="#anvs-ld">
+                    <div>Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
+                    <div>{{question.questionText}}</div>
+                </a>
+                <div id="anvs-ld" class="collapse">
+
+                    <ul>
+                        <li><label>
+                            <div class="icheckbox checkAnswer">yes <input type="radio" name="checka" data="yes"/></div>
+                        </label></li>
+                        <li><label>
+                            <div class="icheckbox checkAnswer">Improve <input type="radio" name="checka"
+                                                                              data="improve"/></div>
+                        </label></li>
+                        <li><label>
+                            <div class="icheckbox checkAnswer">No <input type="radio" name="checka" data="no"/></div>
+                        </label></li>
+                    </ul>
+                    <button id="btn-nextStep">Ok</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</script>
+<script id="result-template" type="text/x-handlebars-template">
+    <div class="question">
+        <ul>
+            <li class="parent-ul">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Yêu Cầu Chung</th>
+                        <th></th>
+                        <th>%Yes</th>
+                        <th>%Improve</th>
+                        <th>%No</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>Yêu Cầu Chung</td>
+                        <td>{{yes}}</td>
+                        <td>{{no}}</td>
+                        <td>{{improve}}</td>
+                    </tr>
+                    <tr>
+                        <td>A.2</td>
+                        <td>Tổ Chức Bộ Máy</td>
+                        <td>{{yes}}</td>
+                        <td>{{no}}</td>
+                        <td>{{improve}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/javascript">
+    function render() {
+        var context = {question: selectQuestion}
+        var source = $("#question-template").html();
+        var template = Handlebars.compile(source);
+        var html = template(context);
+        $("#content").html(html);
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square',
+            radioClass: 'iradio_square'
+        });
+        $('#btn-nextStep').click(function () {
+            nextQuestion();
+        })
+        $(".icheckbox.checkAnswer input").on('ifClicked', function (event) {
+            var action = $(this).attr("data");
+            $(this).popModal(
+                    {
+                        html : $('#'+action+"_popup").html(),
+                        placement : 'bottomLeft'});
+        });
+//        $('.popup').popup({
+//            opacity: 0.3,
+//            transition: 'all 0.3s',
+//            detach:true
+//        });
+    }
+    function nextQuestion() {
+        $(".icheckbox.checkAnswer input").each(function () {
+            if (this.checked) {
+                console.log("check" + $(this).attr("data"))
+                selectQuestion["select"] = $(this).attr("data");
+                if (!checkAndRenderResult()) {
+                    setNextQuest();
+                }
+            }
+        })
+    }
+    function checkAndRenderResult() {
+        var currentIndex = Object.keys(questionMap).indexOf(selectQuestion.Id);
+        if (currentIndex == Object.keys(questionMap).length - 1) {
+            var yes = 0;
+            var improve = 0;
+            var no = 0;
+            for (var i = 0; i < Object.keys(questionMap).length; i++) {
+                if (questionMap[Object.keys(questionMap)[i]].select == "yes") {
+                    yes++
+                }
+                if (questionMap[Object.keys(questionMap)[i]].select == "improve") {
+                    improve++
+                }
+                if (questionMap[Object.keys(questionMap)[i]].select == "no") {
+                    no++
+                }
+            }
+            var source = $("#result-template").html();
+            var template = Handlebars.compile(source);
+            var html = template({yes: yes, no: no, improve: improve});
+            $("#content").html(html);
+            return true;
+        }
+    }
+    function setNextQuest() {
+        var netQuest = 0;
+        var currentIndex = Object.keys(questionMap).indexOf(selectQuestion.Id)
+
+        for (var i = currentIndex + 1; i < Object.keys(questionMap).length; i++) {
+            var nextQuest = questionMap[Object.keys(questionMap)[i]]
+            if (questionMap[Object.keys(questionMap)[i]].mainQuestion) {
+                selectQuestion = nextQuest;
+                break
+            } else {
+                if (questionMap[Object.keys(questionMap)[i]].yesQuestionNeed) {
+                    if (questionMap[questionMap[Object.keys(questionMap)[i]].yesQuestionNeed].select == "yes") {
+                        selectQuestion = nextQuest;
+                        break
+                    } else {
+                        questionMap[Object.keys(questionMap)[i]].select = "yes"
+                    }
+                }
+                if (questionMap[Object.keys(questionMap)[i]].noQuestionNeed) {
+                    if (questionMap[questionMap[Object.keys(questionMap)[i]].noQuestionNeed].select == "no") {
+                        selectQuestion = nextQuest;
+                        break
+                    } else {
+                        questionMap[Object.keys(questionMap)[i]].select = "no"
+                    }
+                }
+            }
+        }
+        render();
+    }
+    $(document).ready(function () {
+        Object.keys(questionMap).forEach(function (item) {
+            if (item.innitHDTH) {
+                item.innitHDTH(input, info)
+            }
+        })
+        selectQuestion = questionMap[Object.keys(questionMap)[0]]
+        render();
+        $('.mdl-navigation__link.static').click(function (event) {
+            event.preventDefault();
+            var title = $(this).find('span');
+            $('#headerTitle').text($(title).text());
+        });
+
+    })
+    info = {
+        'G6.1': "G6.1",
+        G7: "G"
+    }
+    input = {
+        G6: "G6.1",
+        G7: 800,
+    }
+    selectQuestion = undefined
+    option = {
+        "option1": "Option 1",
+        "option2": "Option 2",
+        "option3": "Option 3",
+        "option4": "Option 4",
+        "option5": "Option 5"
+    }
+    questionMap = {
+        "A2.2.1": {
+            mainQuestion: true,
+            Id: "A2.2.1",
+            questionText: "Cơ sở có bố trí người/bộ phận làm công tác ATVSLĐ hay không?",
+            option: ["Yes", "Improve/", "No"],
+            subQuestionIds: ["A2.2.2", "A2.2.3"],
+            dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 1 và 2",
+            hdth: "Căn cứ vào ngành nghề (G6) và số lượng lao động (G7), cơ sở cần [xxx].",
+            options: ["option1", "option2"],
+            innitHDTH(input, info){
+                var G7 = Ginput["G7"];
+                var G6 = Ginput["G6"];
+                this.hdth = "Căn cứ vào ngành nghề (#G6#) và số lượng lao động (#G7#), cơ sở cần #[xxx]#."
+                if (Ginput["G6"] == Ginfo["G6.1"]) {
+                    var xxxhd = "";
+                    if (G7 < 10) {
+                        xxxhd = "bố trí ít nhất 01 người làm ATVSLĐ theo chế độ bán chuyên trách"
+                    }
+                    if (G7 >= 10 && G7 < 300) {
+                        xxxhd = "bố trí ít nhất 01 người làm ATVSLĐ theo chế độ chuyên trách"
+                    }
+                    if (G7 >= 300 && G7 < 1000) {
+                        xxxhd = "bố trí ít nhất 02 người làm ATVSLĐ theo chế độ chuyên trách"
+                    }
+                    if (G7 > 10000) {
+                        xxxhd = "thành lập phòng ATVSLĐ"
+                    }
+                }
+                this.hdth = this.hdth.replace("#G7#", G7)
+                this.hdth = this.hdth.replace("#G6#", G6)
+                this.hdth = this.hdth.replace("#[xxx]#", xxxhd)
+
+            }
+        },
+        "A2.2.2": {
+            mainQuestion: false,
+            noQuestionNeed: "A2.2.1",
+            Id: "A2.2.2",
+            questionText: "Nếu không bố trí cán bộ/phòng ATVSLĐ, thì cơ sở có thuê các tổ chức có đủ năng lực phù hợp để thực hiện công tác ATVSLĐ không?",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 5",
+            hdth: "Cơ sở phải thuê các tổ chức có đủ năng lực phù hợp để thực hiện các quyền hạn và nhiệm vụ của cán bộ/phòng ATVSLĐ như câu A.2.2.X",
+            options: ["option1"]
+        },
+        "A2.2.3": {
+            mainQuestion: false,
+            noQuestionNeed: "A2.2.1",
+            Id: "A2.2.3",
+            questionText: "Việc ký Hợp đồng dịch vụ cung cấp dịch vụ an toàn có được thông báo cho Sở LĐTBXH không?",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 5",
+            hdth: "Cơ sở gởi công văn thông báo kèm hợp đồng giữa cơ sở sản xuất, kinh doanh với tổ chức cho thuê dịch vụ đến Sở Lao động – Thương binh và Xã hội cấp tỉnh, nơi cơ sở có trụ sở chính"
+        },
+        "A2.2.4": {
+            mainQuestion: true,
+            Id: "A2.2.4",
+            questionText: "Người làm công tác ATVSLĐ chuyên trách có chuyên môn phù hợp theo qui định không?",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 3 ",
+            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau: \n+"
+            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;\n+"
+            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ bậc đại học trở lên với chuyên ngành phù hợp với lĩnh vực sản xuất, kinh doanh của cơ sở; hoặc có ít nhất 05 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ cao đẳng hoặc chuyên ngành đào tạo khác với lĩnh vực sản xuất, kinh doanh của cơ sở;\n+"
+            + "c) Đã tham gia và hoàn thành khóa huấn luyện an toàn, vệ sinh lao động dành cho người làm công tác an toàn, vệ sinh lao động theo chế độ chuyên trách.",
+            panalize: "5.000.000 - 10.000.000"
+        },
+        "A2.2.5": {
+            mainQuestion: true,
+            Id: "A2.2.5",
+            questionText: "",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 4",
+            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau:\n"
+            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;\n"
+            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở,\n"
+            + "c) Đã tham gia và hoàn thành khóa huấn luyện an toàn, vệ sinh lao động dành cho người làm công tác an toàn, vệ sinh lao động theo chế độ chuyên trách.",
+            panalize: "5.000.000 - 10.000.000"
+        }, "A2.2.6": {
+            mainQuestion: true,
+            Id: "A2.2.6",
+            questionText: "Người làm công tác ATVSLĐ có thực hiện đầy đủ các quyền hạn theo qui định không?",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Luật ATVSLĐ, Điều 72, Khoản 3",
+            hdth: "Người làm công tác an toàn, vệ sinh lao động, bộ phận an toàn, vệ sinh lao động có quyền sau đây:\n"
+            + "a) Yêu cầu người phụ trách bộ phận sản xuất ra lệnh đình chỉ công việc hoặc có thể quyết định tạm đình chỉ công việc trong trường hợp khẩn cấp khi phát hiện các nguy cơ xảy ra tai nạn lao động để thực hiện các biện pháp bảo đảm an toàn, vệ sinh lao động, đồng thời phải báo cáo người sử dụng lao động;\n"
+            + "b) Đình chỉ hoạt động của máy, thiết bị không bảo đảm an toàn hoặc đã hết hạn sử dụng;\n"
+            + "c) Được người sử dụng lao động bố trí thời gian tham dự lớp huấn luyện, bồi dưỡng nâng cao nghiệp vụ về an toàn, vệ sinh lao động theo quy định của pháp luật",
+            panalize: "5.000.000 - 10.000.000"
+        }
+    };
+</script>
+</body>
+</html>
