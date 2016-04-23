@@ -166,6 +166,14 @@
         width: 200px;
         margin: 20px;
     }
+    .left-panel{
+        display: inline-block;
+        width: 38%;
+    }
+    .content-panel{
+        display: inline-block;
+        width: 60%;
+    }
 </style>
 <script id="question-template" type="text/x-handlebars-template">
 
@@ -191,7 +199,7 @@
         </div>
         <div class="remodal" data-remodal-id="modalno">
             <button data-remodal-action="close" class="remodal-close"></button>
-            <h2>Thông Tin</h2>
+            <h2>Hướng Dẩn Thực Hiện</h2>
             <div class="modal-content">
                 <p>
                     {{question.dkcc}}
@@ -203,46 +211,56 @@
 
         </div>
 
+        <div class="left-panel">
+            <ul>
+                {{#each listQuestion}}
+                    <li>{{@index}}.Câu Hỏi {{Id}} ({{#if select}}{{select}}{{else}}Chưa Trả Lời{{/if}})</li>
+                {{/each}}
+            </ul>
 
-        <ul>
-            <li class="parent-ul">
-                <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
-                <div style="margin-left: 50px">
-                    <a data-toggle="collapse" data-target="#anvs-ld" style="cursor: pointer">
-                        <div><span>Câu Hỏi {{question.Id}}: </span> {{question.questionText}}</div>
-                    </a>
-                    <div id="anvs-ld" class="collapse in">
-                        <ul>
-                            <li><label>
-                                <div class="icheckbox checkAnswer yes"><input type="radio"
-                                                                             {{#if question.isDisabledYes}}disabled{{/if}}
-                                                                                {{#if question.selectYes}}checked{{/if}}
-                                    name="checka" data="yes"/><span>Yes</span>
-                                </div>
-                            </label></li>
-                            <li>
-                                <label>
-                                    <div class="icheckbox checkAnswer improve">
-                                        <input type="radio" name="checka" data="improve"
-                                                {{#if question.isDisabledImprove}}disabled{{/if}}
-                                                {{#ifvalue question.select value='improve'}}checked{{/ifvalue}}
-                                        /><span>Improve</span></div>
+        </div>
+        <div class="content-panel">
+            <ul>
+                <li class="parent-ul">
+                    <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
+                    <div style="margin-left: 50px">
+                        <a data-toggle="collapse" data-target="#anvs-ld" style="cursor: pointer">
+                            <div><span>Câu Hỏi {{question.Id}}: </span> {{question.questionText}}</div>
+                        </a>
+                        <div id="anvs-ld" class="collapse in">
+                            <ul>
+                                <li><label>
+                                    <div class="icheckbox checkAnswer yes"><input type="radio"
+                                                                                  {{#if question.isDisabledYes}}disabled{{/if}}
+                                        {{#if question.selectYes}}checked{{/if}}
+                                        name="checka" data="yes"/><span>Yes</span>
+                                    </div>
                                 </label></li>
-                            <li><label>
-                                <div class="icheckbox checkAnswer no"><input type="radio" name="checka" data="no"
-                                                                             {{#if question.isDisabledNo}}disabled{{/if}}
-                                                                             {{#ifvalue question.select value='no'}} checked {{/ifvalue}}
-                                /><span>No</span>
-                                </div>
-                            </label></li>
-                        </ul>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn-nextStep">Ok</button>
-                        {{#if question.selectYes}}<div style="display: inline;">Đã đũ điều kiện</div>{{/if}}
+                                <li>
+                                    <label>
+                                        <div class="icheckbox checkAnswer improve">
+                                            <input type="radio" name="checka" data="improve"
+                                                   {{#if question.isDisabledImprove}}disabled{{/if}}
+                                            {{#ifvalue question.select value='improve'}}checked{{/ifvalue}}
+                                            /><span>Improve</span></div>
+                                    </label></li>
+                                <li><label>
+                                    <div class="icheckbox checkAnswer no"><input type="radio" name="checka" data="no"
+                                                                                 {{#if question.isDisabledNo}}disabled{{/if}}
+                                        {{#ifvalue question.select value='no'}} checked {{/ifvalue}}
+                                        /><span>No</span>
+                                    </div>
+                                </label></li>
+                            </ul>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn-nextStep">Ok</button>
+                            {{#if question.selectYes}}<div style="display: inline;">Đã đũ điều kiện</div>{{/if}}
+                        </div>
                     </div>
-                </div>
 
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </script>
 <script id="result-template" type="text/x-handlebars-template">
@@ -303,7 +321,10 @@
         var mapOption = selectQuestion.options?selectQuestion.options.map(function (item) {
             return option[item];
         }):[]
-        var context = {question: selectQuestion,mapOption:mapOption}
+        var listQuestion = Object.keys(questionMap).map(function (key) {
+            return questionMap[key];
+        })
+        var context = {question: selectQuestion,mapOption:mapOption,listQuestion:listQuestion}
         var source = $("#question-template").html();
         var template = Handlebars.compile(source);
         var html = template(context);
