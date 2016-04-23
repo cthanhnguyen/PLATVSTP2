@@ -203,7 +203,7 @@
                     <div id="anvs-ld" class="collapse in">
                         <ul>
                             <li><label>
-                                <div class="icheckbox checkAnswer"><input type="radio"
+                                <div class="icheckbox checkAnswer yes"><input type="radio"
                                                                              {{#if question.isDisabledYes}}disabled{{/if}}
                                                                                 {{#if question.selectYes}}checked{{/if}}
                                     name="checka" data="yes"/><span>Yes</span>
@@ -211,14 +211,14 @@
                             </label></li>
                             <li>
                                 <label>
-                                    <div class="icheckbox checkAnswer">
+                                    <div class="icheckbox checkAnswer improve">
                                         <input type="radio" name="checka" data="improve"
                                                 {{#if question.isDisabledImprove}}disabled{{/if}}
                                                 {{#ifvalue question.select value='improve'}}checked{{/ifvalue}}
                                         /><span>Improve</span></div>
                                 </label></li>
                             <li><label>
-                                <div class="icheckbox checkAnswer"><input type="radio" name="checka" data="no"
+                                <div class="icheckbox checkAnswer no"><input type="radio" name="checka" data="no"
                                                                              {{#if question.isDisabledNo}}disabled{{/if}}
                                                                              {{#ifvalue question.select value='no'}} checked {{/ifvalue}}
                                 /><span>No</span>
@@ -303,7 +303,7 @@
         })
         $(".icheckbox.checkAnswer input").on('ifClicked', function (event) {
             var action = $(this).attr("data");
-            $(this).popModal(
+            $(".icheckbox.checkAnswer").popModal(
                     {
                         html: $('#' + action + "_popup").html(),
                         placement: 'bottomLeft'
@@ -358,7 +358,7 @@
             var total = yes+improve+no;
             var source = $("#result-template").html();
             var template = Handlebars.compile(source);
-            var html = template({yes: (yes/total*100), no: (no/total*100), improve: (improve/total*100)});
+            var html = template({yes: Math.round(yes/total*100), no: Math.round(no/total*100), improve: Math.round(improve/total*100)});
             $("#content").html(html);
             return true;
         }
