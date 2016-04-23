@@ -210,15 +210,6 @@
             </div>
 
         </div>
-
-        <div class="left-panel">
-            <ul>
-                {{#each listQuestion}}
-                    <li>{{@index}}.Câu Hỏi {{Id}} ({{#if select}}{{select}}{{else}}Chưa Trả Lời{{/if}})</li>
-                {{/each}}
-            </ul>
-
-        </div>
         <div class="content-panel">
             <ul>
                 <li class="parent-ul">
@@ -260,6 +251,15 @@
                 </li>
             </ul>
         </div>
+        <div class="left-panel">
+            <ul>
+                {{#each listQuestion}}
+                    <li>{{index}}.Câu Hỏi {{Id}} ({{#if select}}{{select}}{{else}}Chưa Trả Lời{{/if}})</li>
+                {{/each}}
+            </ul>
+
+        </div>
+
 
     </div>
 </script>
@@ -321,7 +321,8 @@
         var mapOption = selectQuestion.options?selectQuestion.options.map(function (item) {
             return option[item];
         }):[]
-        var listQuestion = Object.keys(questionMap).map(function (key) {
+        var listQuestion = Object.keys(questionMap).map(function (key,index) {
+            questionMap[key]["index"]=index+1;
             return questionMap[key];
         })
         var context = {question: selectQuestion,mapOption:mapOption,listQuestion:listQuestion}
