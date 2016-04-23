@@ -340,7 +340,7 @@
 
 
         $('#btn-nextStep').click(function () {
-            nextQuestion();
+            checkAndRenderResult();
         })
         $(".icheckbox.checkAnswer input").on('ifClicked', function (event) {
             var action = $(this).attr("data");
@@ -447,8 +447,7 @@
 
     }
     function checkAndRenderResult() {
-        var currentIndex = Object.keys(questionMap).indexOf(selectQuestion.Id);
-        if (currentIndex == Object.keys(questionMap).length - 1) {
+
             var yes = 0;
             var improve = 0;
             var no = 0;
@@ -467,9 +466,8 @@
             var source = $("#result-template").html();
             var template = Handlebars.compile(source);
             var html = template({yes: Math.round(yes/total*100), no: Math.round(no/total*100), improve: Math.round(improve/total*100)});
-            $("#content").html(html);
-            return true;
-        }
+            $("#content").html(html)
+
     }
     function setNextQuest() {
         var netQuest = 0;
