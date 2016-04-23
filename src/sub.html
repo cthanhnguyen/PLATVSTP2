@@ -50,7 +50,8 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="plugin/popModal.css">
+    <link rel="stylesheet" href="js/remodal.css">
+    <link rel="stylesheet" href="js/remodal-default-theme.css">
     <link href="../src/skins/all.css?v=1.0.2" rel="stylesheet">
     <style>
         #view-source {
@@ -65,6 +66,9 @@
 
         .parent-ul {
             list-style: none;
+        }
+        .modal-content{
+            text-align: left;
         }
     </style>
 </head>
@@ -143,7 +147,7 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="plugin/popModal.min.js"></script>
+<script src="js/remodal.min.js"></script>
 <script src="../src/js/icheck.min.js"></script>
 <script src="handlebars-v3.0.3.js"></script>
 <style>
@@ -166,25 +170,29 @@
 <script id="question-template" type="text/x-handlebars-template">
 
     <div class="question">
-        <div id="yes_popup" class="popup">
-            <div class="popModal_content popModal_contentOverflow">
-                Bạn đã có các điều kiện sau
+        <div class="remodal" data-remodal-id="modalyes">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <h2>Bạn đã có các điều kiện sau</h2>
+            <div class="modal-content">
                 <ul>
                     {{#each mapOption}}
                     <li>{{this}}</li>
                     {{/each}}
                 </ul>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my_popup_close">Close</button>
             </div>
         </div>
-        <div id="improve_popup" class="popup">
-            Để lại nguyên nhân cho chúng tôi
-            <div class="popModal_content popModal_contentOverflow">
-                <input placeholder="Ghi Chú"/>
+        <div class="remodal" data-remodal-id="modalimprove">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <h1>Để lại nguyên nhân cho chúng tôi</h1>
+
+            <div class="modal-content">
+                <input class="mdl-textfield__input" placeholder="Ghi Chú"/>
             </div>
         </div>
-        <div id="no_popup" class="popup">
-            <div class="popModal_content popModal_contentOverflow">
+        <div class="remodal" data-remodal-id="modalno">
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <h2>Thông Tin</h2>
+            <div class="modal-content">
                 <p>
                     {{question.dkcc}}
                 </p>
@@ -192,7 +200,10 @@
                     {{question.hdth}}
                 </p>
             </div>
+
         </div>
+
+
         <ul>
             <li class="parent-ul">
                 <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
@@ -286,6 +297,9 @@
         }
     })
     function render() {
+        if($('[data-remodal-id=modalyes]').remodal())$('[data-remodal-id=modalyes]').remodal().destroy();
+        if($('[data-remodal-id=modalyes]').remodal())$('[data-remodal-id=modalimprove]').remodal().destroy();
+        if($('[data-remodal-id=modalyes]').remodal())$('[data-remodal-id=modalno]').remodal().destroy();
         var mapOption = selectQuestion.options?selectQuestion.options.map(function (item) {
             return option[item];
         }):[]
@@ -303,12 +317,9 @@
         })
         $(".icheckbox.checkAnswer input").on('ifClicked', function (event) {
             var action = $(this).attr("data");
-            $(".icheckbox.checkAnswer").popModal(
-                    {
-                        html: $('#' + action + "_popup").html(),
-                        placement: 'bottomLeft'
-                    });
+            $('[data-remodal-id=modal'+action+']').remodal().open();
         });
+
 //        $('.popup').popup({
 //            opacity: 0.3,
 //            transition: 'all 0.3s',
