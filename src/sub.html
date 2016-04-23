@@ -147,8 +147,20 @@
 <script src="../src/js/icheck.min.js"></script>
 <script src="handlebars-v3.0.3.js"></script>
 <style>
-    .popup{
+    .popup {
         display: none;
+    }
+
+    .popModal {
+        max-width: inherit;
+    }
+
+    .popModal_content {
+        width: 600px;
+    }
+    .checkAnswer span{
+        width: 200px;
+        margin: 20px;
     }
 </style>
 <script id="question-template" type="text/x-handlebars-template">
@@ -156,51 +168,68 @@
     <div class="question">
         <div id="yes_popup" class="popup">
             <div class="popModal_content popModal_contentOverflow">
+                Bạn đã có các điều kiện sau
                 <ul>
-                    {{#each question.options}}
+                    {{#each mapOption}}
                     <li>{{this}}</li>
                     {{/each}}
                 </ul>
-                <button class="my_popup_close">Close</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my_popup_close">Close</button>
             </div>
         </div>
         <div id="improve_popup" class="popup">
+            Để lại nguyên nhân cho chúng tôi
             <div class="popModal_content popModal_contentOverflow">
                 <input placeholder="Ghi Chú"/>
             </div>
         </div>
         <div id="no_popup" class="popup">
             <div class="popModal_content popModal_contentOverflow">
-                <div>
+                <p>
                     {{question.dkcc}}
-                </div>
-                <div>
+                </p>
+                <p>
                     {{question.hdth}}
-                </div>
+                </p>
             </div>
         </div>
         <ul>
             <li class="parent-ul">
-                <a data-toggle="collapse" data-target="#anvs-ld">
-                    <div>Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
-                    <div>{{question.questionText}}</div>
-                </a>
-                <div id="anvs-ld" class="collapse">
-
-                    <ul>
-                        <li><label>
-                            <div class="icheckbox checkAnswer">yes <input type="radio" name="checka" data="yes"/></div>
-                        </label></li>
-                        <li><label>
-                            <div class="icheckbox checkAnswer">Improve <input type="radio" name="checka"
-                                                                              data="improve"/></div>
-                        </label></li>
-                        <li><label>
-                            <div class="icheckbox checkAnswer">No <input type="radio" name="checka" data="no"/></div>
-                        </label></li>
-                    </ul>
-                    <button id="btn-nextStep">Ok</button>
+                <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
+                <div style="margin-left: 50px">
+                    <a data-toggle="collapse" data-target="#anvs-ld" style="cursor: pointer">
+                        <div><span>Câu Hỏi {{question.Id}}: </span> {{question.questionText}}</div>
+                    </a>
+                    <div id="anvs-ld" class="collapse in">
+                        <ul>
+                            <li><label>
+                                <div class="icheckbox checkAnswer"><input type="radio"
+                                                                             {{#if question.isDisabledYes}}disabled{{/if}}
+                                                                                {{#if question.selectYes}}checked{{/if}}
+                                    name="checka" data="yes"/><span>Yes</span>
+                                </div>
+                            </label></li>
+                            <li>
+                                <label>
+                                    <div class="icheckbox checkAnswer">
+                                        <input type="radio" name="checka" data="improve"
+                                                {{#if question.isDisabledImprove}}disabled{{/if}}
+                                                {{#ifvalue question.select value='improve'}}checked{{/ifvalue}}
+                                        /><span>Improve</span></div>
+                                </label></li>
+                            <li><label>
+                                <div class="icheckbox checkAnswer"><input type="radio" name="checka" data="no"
+                                                                             {{#if question.isDisabledNo}}disabled{{/if}}
+                                                                             {{#ifvalue question.select value='no'}} checked {{/ifvalue}}
+                                /><span>No</span>
+                                </div>
+                            </label></li>
+                        </ul>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn-nextStep">Ok</button>
+                        {{#if question.selectYes}}<div style="display: inline;">Đã đũ điều kiện</div>{{/if}}
+                    </div>
                 </div>
+
             </li>
         </ul>
     </div>
@@ -209,7 +238,7 @@
     <div class="question">
         <ul>
             <li class="parent-ul">
-                <table>
+                <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                     <thead>
                     <tr>
                         <th>Yêu Cầu Chung</th>
@@ -223,16 +252,17 @@
                     <tr>
                         <td>A</td>
                         <td>Yêu Cầu Chung</td>
-                        <td>{{yes}}</td>
-                        <td>{{no}}</td>
-                        <td>{{improve}}</td>
+                        <td>{{yes}}%</td>
+                        <td>{{improve}}%</td>
+                        <td>{{no}}%</td>
                     </tr>
                     <tr>
                         <td>A.2</td>
                         <td>Tổ Chức Bộ Máy</td>
-                        <td>{{yes}}</td>
-                        <td>{{no}}</td>
-                        <td>{{improve}}</td>
+                        <td>{{yes}}%</td>
+                        <td>{{improve}}%</td>
+                        <td>{{no}}%</td>
+
                     </tr>
                     </tbody>
                 </table>
@@ -241,8 +271,25 @@
     </div>
 </script>
 <script type="text/javascript">
+    Handlebars.registerHelper('ifvalue', function (conditional, options) {
+        if (options.hash.value === conditional) {
+            options.fn(this)
+        } else {
+            options.inverse(this);
+        }
+    })
+    Handlebars.registerHelper('ifNotvalue', function (conditional, options) {
+        if (options.hash.value != conditional) {
+            options.fn(this)
+        } else {
+            options.inverse(this);
+        }
+    })
     function render() {
-        var context = {question: selectQuestion}
+        var mapOption = selectQuestion.options?selectQuestion.options.map(function (item) {
+            return option[item];
+        }):[]
+        var context = {question: selectQuestion,mapOption:mapOption}
         var source = $("#question-template").html();
         var template = Handlebars.compile(source);
         var html = template(context);
@@ -258,8 +305,9 @@
             var action = $(this).attr("data");
             $(this).popModal(
                     {
-                        html : $('#'+action+"_popup").html(),
-                        placement : 'bottomLeft'});
+                        html: $('#' + action + "_popup").html(),
+                        placement: 'bottomLeft'
+                    });
         });
 //        $('.popup').popup({
 //            opacity: 0.3,
@@ -272,6 +320,18 @@
             if (this.checked) {
                 console.log("check" + $(this).attr("data"))
                 selectQuestion["select"] = $(this).attr("data");
+
+                if($(this).attr("data")=='yes'){
+                    var pickOption = selectQuestion.options;
+                    if(pickOption){
+                        pickOption.forEach(function(item){
+                            if(availableOption.indexOf(item)<0){
+                                availableOption.push(item)
+                            }
+                        })
+                    }
+
+                }
                 if (!checkAndRenderResult()) {
                     setNextQuest();
                 }
@@ -295,9 +355,10 @@
                     no++
                 }
             }
+            var total = yes+improve+no;
             var source = $("#result-template").html();
             var template = Handlebars.compile(source);
-            var html = template({yes: yes, no: no, improve: improve});
+            var html = template({yes: (yes/total*100), no: (no/total*100), improve: (improve/total*100)});
             $("#content").html(html);
             return true;
         }
@@ -312,12 +373,13 @@
                 selectQuestion = nextQuest;
                 break
             } else {
+                // cần điều kiện đã chọ yes của câu hỏi nào khác
                 if (questionMap[Object.keys(questionMap)[i]].yesQuestionNeed) {
                     if (questionMap[questionMap[Object.keys(questionMap)[i]].yesQuestionNeed].select == "yes") {
                         selectQuestion = nextQuest;
                         break
                     } else {
-                        questionMap[Object.keys(questionMap)[i]].select = "yes"
+                        questionMap[Object.keys(questionMap)[i]].select = questionMap[questionMap[Object.keys(questionMap)[i]].yesQuestionNeed].select;
                     }
                 }
                 if (questionMap[Object.keys(questionMap)[i]].noQuestionNeed) {
@@ -325,18 +387,40 @@
                         selectQuestion = nextQuest;
                         break
                     } else {
-                        questionMap[Object.keys(questionMap)[i]].select = "no"
+                        questionMap[Object.keys(questionMap)[i]].select = questionMap[questionMap[Object.keys(questionMap)[i]].noQuestionNeed].select
                     }
                 }
             }
         }
+        if(selectQuestion.options){
+            if(containsAll(availableOption,selectQuestion.options)){
+                selectQuestion.select = "yes"
+                selectQuestion.selectYes = true
+                selectQuestion.isDisabledYes=false
+                selectQuestion.isDisabledImprove=true
+                selectQuestion.isDisabledNo=true
+            }
+        }
         render();
     }
+    function containsAll(source,target)
+    {
+        target.forEach(function (item) {
+            if(source.indexOf(item)<0){
+                return false;
+            }
+        })
+        return true;
+    }
+
     $(document).ready(function () {
         Object.keys(questionMap).forEach(function (item) {
-            if (item.innitHDTH) {
-                item.innitHDTH(input, info)
+            if (questionMap[item].innitHDTH) {
+                questionMap[item].innitHDTH(input, info)
+
             }
+
+
         })
         selectQuestion = questionMap[Object.keys(questionMap)[0]]
         render();
@@ -356,12 +440,13 @@
         G7: 800,
     }
     selectQuestion = undefined
+    availableOption = []
     option = {
-        "option1": "Option 1",
-        "option2": "Option 2",
-        "option3": "Option 3",
-        "option4": "Option 4",
-        "option5": "Option 5"
+        "option1": "Có bố trí người làm công tác",
+        "option2": "Có đơn vị quản lý",
+        "option3": "Có huấn luyện chuyên môn",
+        "option4": "Có đơn vị giảng dạy",
+        "option5": "Có đơn vị nghiên cứu khoa học"
     }
     questionMap = {
         "A2.2.1": {
@@ -374,10 +459,10 @@
             hdth: "Căn cứ vào ngành nghề (G6) và số lượng lao động (G7), cơ sở cần [xxx].",
             options: ["option1", "option2"],
             innitHDTH(input, info){
-                var G7 = Ginput["G7"];
-                var G6 = Ginput["G6"];
+                var G7 = input["G7"];
+                var G6 = input["G6"];
                 this.hdth = "Căn cứ vào ngành nghề (#G6#) và số lượng lao động (#G7#), cơ sở cần #[xxx]#."
-                if (Ginput["G6"] == Ginfo["G6.1"]) {
+                if (input["G6"] == info["G6.1"]) {
                     var xxxhd = "";
                     if (G7 < 10) {
                         xxxhd = "bố trí ít nhất 01 người làm ATVSLĐ theo chế độ bán chuyên trách"
@@ -423,33 +508,53 @@
             questionText: "Người làm công tác ATVSLĐ chuyên trách có chuyên môn phù hợp theo qui định không?",
             option: ["Yes", "Improve/", "No"],
             dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 3 ",
-            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau: \n+"
-            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;\n+"
-            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ bậc đại học trở lên với chuyên ngành phù hợp với lĩnh vực sản xuất, kinh doanh của cơ sở; hoặc có ít nhất 05 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ cao đẳng hoặc chuyên ngành đào tạo khác với lĩnh vực sản xuất, kinh doanh của cơ sở;\n+"
+            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau: <br>+"
+            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;<br />+"
+            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ bậc đại học trở lên với chuyên ngành phù hợp với lĩnh vực sản xuất, kinh doanh của cơ sở; hoặc có ít nhất 05 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở, nếu có trình độ cao đẳng hoặc chuyên ngành đào tạo khác với lĩnh vực sản xuất, kinh doanh của cơ sở;<br />+"
             + "c) Đã tham gia và hoàn thành khóa huấn luyện an toàn, vệ sinh lao động dành cho người làm công tác an toàn, vệ sinh lao động theo chế độ chuyên trách.",
-            panalize: "5.000.000 - 10.000.000"
+            panalize: "5.000.000 - 10.000.000",
+            options: ["option1"]
         },
         "A2.2.5": {
             mainQuestion: true,
             Id: "A2.2.5",
-            questionText: "",
+            questionText: "Người làm công tác ATVSLĐ bán chuyên trách có chuyên môn phù hợp theo qui định không?",
             option: ["Yes", "Improve/", "No"],
             dkcc: "Nghị định Dự thảo 2, Điều 36, Khoản 4",
-            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau:\n"
-            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;\n"
-            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở,\n"
+            hdth: "Người làm công tác ATVSLĐ phải thỏa mãn 3 tiêu chí sau:<br />"
+            + "a) Có trình độ từ cao đẳng trở lên thuộc các chuyên ngành khối kỹ thuật;<br />"
+            + "b) Có ít nhất 01 năm kinh nghiệm làm việc trong lĩnh vực sản xuất, kinh doanh của cơ sở,<br />"
             + "c) Đã tham gia và hoàn thành khóa huấn luyện an toàn, vệ sinh lao động dành cho người làm công tác an toàn, vệ sinh lao động theo chế độ chuyên trách.",
             panalize: "5.000.000 - 10.000.000"
-        }, "A2.2.6": {
+        },
+        "A2.2.6": {
             mainQuestion: true,
             Id: "A2.2.6",
-            questionText: "Người làm công tác ATVSLĐ có thực hiện đầy đủ các quyền hạn theo qui định không?",
+            questionText:"Người làm công tác ATVSLĐ có thực hiện đầy đủ các quyền hạn theo qui định không?",
             option: ["Yes", "Improve/", "No"],
             dkcc: "Luật ATVSLĐ, Điều 72, Khoản 3",
-            hdth: "Người làm công tác an toàn, vệ sinh lao động, bộ phận an toàn, vệ sinh lao động có quyền sau đây:\n"
-            + "a) Yêu cầu người phụ trách bộ phận sản xuất ra lệnh đình chỉ công việc hoặc có thể quyết định tạm đình chỉ công việc trong trường hợp khẩn cấp khi phát hiện các nguy cơ xảy ra tai nạn lao động để thực hiện các biện pháp bảo đảm an toàn, vệ sinh lao động, đồng thời phải báo cáo người sử dụng lao động;\n"
-            + "b) Đình chỉ hoạt động của máy, thiết bị không bảo đảm an toàn hoặc đã hết hạn sử dụng;\n"
+            hdth: "Người làm công tác an toàn, vệ sinh lao động, bộ phận an toàn, vệ sinh lao động có quyền sau đây:<br />"
+            + "a) Yêu cầu người phụ trách bộ phận sản xuất ra lệnh đình chỉ công việc hoặc có thể quyết định tạm đình chỉ công việc trong trường hợp khẩn cấp khi phát hiện các nguy cơ xảy ra tai nạn lao động để thực hiện các biện pháp bảo đảm an toàn, vệ sinh lao động, đồng thời phải báo cáo người sử dụng lao động;<br />"
+            + "b) Đình chỉ hoạt động của máy, thiết bị không bảo đảm an toàn hoặc đã hết hạn sử dụng;<br />"
             + "c) Được người sử dụng lao động bố trí thời gian tham dự lớp huấn luyện, bồi dưỡng nâng cao nghiệp vụ về an toàn, vệ sinh lao động theo quy định của pháp luật",
+            panalize: "5.000.000 - 10.000.000"
+        },
+        "A2.2.7": {
+            mainQuestion: true,
+            Id: "A2.2.7",
+            questionText:"Người làm công tác ATVSLĐ có thực hiện các nhiệm vụ theo qui định không?",
+            option: ["Yes", "Improve/", "No"],
+            dkcc: "Luật ATVSLĐ, Điều 72, Khoản 3",
+            hdth: "Người làm công tác ATVSLĐ hoặc bộ phận ATVSLĐ có nhiệm vụ tham mưu, giúp người sử dụng lao động tổ chức thực hiện công tác ATVSLĐ tại cơ sở , bao gồm các nội dung chủ yếu sau đây:<br />"
+            +"a) Xây dựng nội quy, quy trình, biện pháp bảo đảm ATVSLĐ; phòng, chống cháy, nổ;<br />"
+            +"b) Xây dựng, đôn đốc việc thực hiện kế hoạch ATVSLĐ hằng năm (Link đến A3); đánh giá rủi ro và xây dựng kế hoạch ứng cứu khẩn cấp (Link đến A4);<br />"
+            +"c) Quản lý và theo dõi việc khai báo, kiểm định máy, thiết bị, vật tư, chất có yêu cầu nghiêm ngặt về ATVSLĐ;<br />"
+            +"d) Tổ chức thực hiện hoạt động thông tin, tuyên truyền, huấn luyện về ATVSLĐ; sơ cứu, cấp cứu, phòng, chống BNN cho người lao động (Link đến A6)<br />"
+            +"đ) Tổ chức tự kiểm tra về ATVSLĐ; điều tra TNLĐ, sự cố kỹ thuật gây mất ATVSLĐ theo quy định của pháp luật;<br />"
+            +"e) Chủ trì, phối hợp bộ phận y tế tổ chức giám sát, kiểm soát yếu tố nguy hiểm, yếu tố có hại;<br />"
+            +"g) Tổng hợp và đề xuất với người sử dụng lao động giải quyết kiến nghị của đoàn thanh tra, đoàn kiểm tra và người lao động về ATVSLĐ;<br />"
+            +"h) Phối hợp với Ban chấp hành công đoàn cơ sở hướng dẫn thực hiện nhiệm vụ của an toàn, vệ sinh viên (Link đến A2.4)<br />"
+            +"i) Tổ chức thi đua, khen thưởng, xử lý kỷ luật, thống kê, báo cáo công tác ATVSLĐ (Link đến A8)",
             panalize: "5.000.000 - 10.000.000"
         }
     };
