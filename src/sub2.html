@@ -118,7 +118,7 @@
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
             <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
                                                               role="presentation">home</i><span>YÊU CẦU CHUNG</span></a>
-            <a class="mdl-navigation__link" href="sub.html"><i class="mdl-color-text--blue-grey-400 material-icons"
+            <a class="mdl-navigation__link" href="sub2.html"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                role="presentation">class</i><span>TỔ CHỨC BỘ MÁY</span></a>
             <a class="mdl-navigation__link static" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
                                                               role="presentation">event</i><span>KẾ HOẠCH ATVSLĐ</span></a>
@@ -172,9 +172,24 @@
         width: 38%;
         float: right;
     }
+    .left-panel ul{
+        display: inline-block;
+        padding: 13px;
+        background-color: white;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    }
+    .left-panel li{
+        display: block;
+        list-style: none;
+    }
     .content-panel{
         display: inline-block;
         width: 60%;
+    }
+    .forllow .icheckbox.checkAnswer {
+        background: darkgrey;
+        padding: 1px 5px 1px 5px;
+        border-radius: 4px 4px 4px 4px;
     }
 </style>
 <script id="question-template" type="text/x-handlebars-template">
@@ -182,6 +197,7 @@
     <div class="question">
 
         <div class="content-panel">
+            <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
             {{#each listQuestion}}
             <div class="remodal" data-remodal-id="modalyes{{Id}}">
                 <button data-remodal-action="close" class="remodal-close"></button>
@@ -215,14 +231,15 @@
                 </div>
 
             </div>
+
             <ul>
                 <li class="parent-ul">
-                    <div><span style="font-weight: bold">Chuyên Mục:</span> Tổ chức Bộ phận An toàn - vệ sinh lao động</div>
+
                     <div style="margin-left: 50px">
-                        <a data-toggle="collapse" data-target="#anvs-ld" style="cursor: pointer">
-                            <div><span>Câu Hỏi {{Id}}: </span> {{questionText}}</div>
+                        <a data-toggle="collapse" data-target="#anvs-ld-{{index}}" style="cursor: pointer">
+                            <div><span>{{index}}. Câu Hỏi {{Id}}: </span> {{questionText}}</div>
                         </a>
-                        <div id="anvs-ld" class="collapse in">
+                        <div id="anvs-ld-{{index}}" class="collapse {{#if select}}in{{/if}} {{#if forllow}}forllow{{/if}}">
                             <ul>
                                 <li><label>
                                     <div class="icheckbox checkAnswer yes"><input type="radio"
@@ -347,7 +364,7 @@
             var qid = $(this).attr("qid");
             selectAndCheckQuestion(qid,action)
 
-            //$('[data-remodal-id="modal'+action+qid+'"]').remodal().open();
+            $('[data-remodal-id="modal'+action+qid+'"]').remodal().open();
         });
 //        $('[checked]').each(function () {
 //            $(this).iCheck('check')
@@ -377,17 +394,17 @@
         for(var i = 0 ; i< Object.keys(questionMap).length;i++){
             var quest = questionMap[Object.keys(questionMap)[i]]
             if(quest.options &&containsAll(availableOption,quest.options)){
-                setSelectQuestion(quest.Id,"yes")
+                setSelectQuestion(quest.Id,"yes",true)
             }
             if(!quest.mainQuestion){
                 if(quest.noQuestionNeed && quest.noQuestionNeed==qid){
                     if(questionMap[quest.noQuestionNeed] !='no'){
-                        setSelectQuestion(quest.Id,questionMap[quest.noQuestionNeed].select)
+                        setSelectQuestion(quest.Id,questionMap[quest.noQuestionNeed].select,true)
                     }
                 }
                 if(quest.yesQuestionNeed && quest.yesQuestionNeed==qid){
                     if(questionMap[quest.yesQuestionNeed] !='yes'){
-                        setSelectQuestion(quest.Id,questionMap[quest.yesQuestionNeed].select)
+                        setSelectQuestion(quest.Id,questionMap[quest.yesQuestionNeed].select,true)
                     }
                 }
             }
@@ -418,7 +435,7 @@
             }
         })
     }
-    function setSelectQuestion(Id, action) {
+    function setSelectQuestion(Id, action,follow) {
         questionMap[Id].select = action
         questionMap[Id]['select'+action] = true
         switch (action){
@@ -427,6 +444,7 @@
                 questionMap[Id].isDisabledYes=false
                 questionMap[Id].isDisabledImprove=true
                 questionMap[Id].isDisabledNo=true
+                questionMap[Id].forllow=follow
                 break
             }
             case 'improve':{
@@ -434,6 +452,7 @@
                 questionMap[Id].isDisabledYes=true
                 questionMap[Id].isDisabledImprove=false
                 questionMap[Id].isDisabledNo=true
+                questionMap[Id].forllow=follow
                 break
             }
             case 'no':{
@@ -441,6 +460,7 @@
                 questionMap[Id].isDisabledYes=true
                 questionMap[Id].isDisabledImprove=true
                 questionMap[Id].isDisabledNo=false
+                questionMap[Id].forllow=follow
                 break
             }
         }
@@ -520,7 +540,7 @@
     }
 
     $(document).ready(function () {
-        Object.keys(questionMap).forEach(function (item) {
+        Object.keys(questionMap).forEach(function (item,index) {
             if (questionMap[item].innitHDTH) {
                 questionMap[item].innitHDTH(input, info)
 
@@ -531,7 +551,7 @@
                     return option[item]
                 })
             }
-
+            questionMap[item]["index"]=index+1
         })
         selectQuestion = questionMap[Object.keys(questionMap)[0]]
         render();
